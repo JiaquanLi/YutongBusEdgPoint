@@ -351,9 +351,26 @@ namespace WindowsFormsApp2
                         for (int yLen = -3; yLen < 3; yLen++)
                         {
                             btPointMotor.SetPixel(obj_MotorP[i].X + xLen, obj_MotorP[i].Y + yLen, System.Drawing.Color.FromArgb(255, 255, 255));
+
+                            for (int iCnt = 0; iCnt < obj_xyz.Count; iCnt++)
+                            {
+                                if (obj_xyz[iCnt].x == (obj_MotorP[i].X + xLen) && (int)(obj_xyz[iCnt].y) == obj_MotorP[i].Y + yLen)
+                                {
+                                    strWriteS = String.Format("{0} {1} {2}", obj_xyz[iCnt].x - offsetImgageX, (int)obj_xyz[iCnt].y + offsetImgageY, obj_xyz[iCnt].z);
+
+                                }
+                            }
                         }
+
+
                     }
 
+                    if (strWriteS == "" )
+                    {
+                        MessageBox.Show("Miss one");
+                        continue;
+                    }
+                    sr.WriteLine(strWriteS);
                 }
 
             }
@@ -374,7 +391,7 @@ namespace WindowsFormsApp2
                             {
                                 if (obj_xyz[iCnt].x == (obj_MotorP2P[i].pointStart.X + xLen) && (int)(obj_xyz[iCnt].y) == obj_MotorP2P[i].pointStart.Y + yLen)
                                 {
-                                    strWriteS = String.Format("{0} {1} {2}", obj_xyz[iCnt].x - offsetImgageX, obj_xyz[iCnt].y + offsetImgageY, obj_xyz[iCnt].z);
+                                    strWriteS = String.Format("{0} {1} {2}", obj_xyz[iCnt].x - offsetImgageX, (int)obj_xyz[iCnt].y + offsetImgageY, obj_xyz[iCnt].z);
 
                                     //sr.WriteLine(strWrite);
                                 }
@@ -384,7 +401,7 @@ namespace WindowsFormsApp2
                             {
                                 if (obj_xyz[iCnt].x == (obj_MotorP2P[i].pointEnd.X + xLen) && (int)(obj_xyz[iCnt].y) == obj_MotorP2P[i].pointEnd.Y + yLen)
                                 {
-                                    strWriteE = String.Format("{0} {1} {2}", obj_xyz[iCnt].x - offsetImgageX, obj_xyz[iCnt].y + offsetImgageY, obj_xyz[iCnt].z);
+                                    strWriteE = String.Format("{0} {1} {2}", obj_xyz[iCnt].x - offsetImgageX, (int)obj_xyz[iCnt].y + offsetImgageY, obj_xyz[iCnt].z);
 
                                     //sr.WriteLine(strWrite);
                                 }

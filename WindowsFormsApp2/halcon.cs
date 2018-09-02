@@ -39,7 +39,7 @@ public partial class HDevelopExport
         HOperatorSet.GenEmptyObj(out ho_ObjectSelected);
         HOperatorSet.GenEmptyObj(out ho_RegionDilation);
         ho_Image.Dispose();
-        HOperatorSet.ReadImage(out ho_Image, "C:/Users/11964/source/repos/WindowsFormsApp2 _3.0/WindowsFormsApp2/bin/x64/Debug/Conv2.bmp");
+        HOperatorSet.ReadImage(out ho_Image, "Conv2.bmp");
         ho_RegionDilation.Dispose();
         HOperatorSet.DilationCircle(ho_Image, out ho_RegionDilation, 3.5);
 
