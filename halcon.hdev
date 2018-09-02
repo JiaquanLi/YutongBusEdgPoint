@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.05.0.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>read_image (Image, 'C:/Users/11964/source/repos/WindowsFormsApp2/WindowsFormsApp2/bin/x64/Debug/Conv2.bmp')</l>
+<c></c>
+<l>get_image_size(Image,Width,Height)</l>
+<l>dilation_circle(Image,RegionDilation,3.5)</l>
+<l>dev_update_window('off')</l>
+<l>dev_close_window()</l>
+<l>dev_open_window(0,0,Width,Height,'black',WindowID)</l>
+<l>dev_display(Image)</l>
+<c>* 提取轮廓</c>
+<l>edges_sub_pix (Image, Edges, 'lanser2', 0.5, 40, 90)</l>
+<c></c>
+<l>*length_xld(Edges, Length)</l>
+<l>*select_shape_xld(Edges, SelectedXLD, 'area', 'and', 0, 9999999)</l>
+<l>union_adjacent_contours_xld (Edges, UnionContours, 100, 1, 'attr_keep')</l>
+<l>*lines_facet (Image, Lines, 5, 3, 8, 'light')</l>
+<l>*get_contour_xld(SelectedXLD, Row, Col)</l>
+<c></c>
+<c></c>
+<l>*edges_sub_pix (Image104305Aa5460af6802b71, Edges, 'canny', 1, 20, 40)</l>
+<l>count_obj (Edges, Number)</l>
+<c></c>
+<l>open_file ('D:/TEST.txt', 'output', FileHandle)</l>
+<l>for Index := 1 to Number by 1</l>
+<l>    select_obj (Edges, ObjectSelected, Index) </l>
+<l>    get_contour_xld (ObjectSelected, Row, Col)</l>
+<l>    length_xld (ObjectSelected, Length)</l>
+<l>    *for inde := 1 to Length by 1</l>
+<c>        *fwrite_string (, 'hallo')</c>
+<l>    *endfor</l>
+<l>endfor </l>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>
