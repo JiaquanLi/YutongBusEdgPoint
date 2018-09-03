@@ -46,7 +46,7 @@ namespace WindowsFormsApp2
         public const int offsetImgageYLft = 500;
 
         public const int offsetImgageXTop = 500;
-        public const int offsetImgageYTop = 0;
+        public const int offsetImgageYTop = -200;
 
         public  int offsetImgageX ;
         public  int offsetImgageY ;
@@ -89,7 +89,9 @@ namespace WindowsFormsApp2
                 MessageBox.Show("选择面");
                 return;
             }
-            int countAdd = 10;
+
+
+            int countAdd = 0;  //Y方向的间隔 补齐参数 老的是10
             if(System.IO.File.Exists(file) == false)
             {
                 MessageBox.Show("File :" + file + " not exist");
@@ -140,7 +142,7 @@ namespace WindowsFormsApp2
                 //bt.SetPixel(obj_xyz[i].x, (int)obj_xyz[i].y, System.Drawing.Color.FromArgb(255, 255, 255));
                 if (i > 1)
                 {
-                    int offset = obj_xyz[i].x - obj_xyz[i - 1].x;
+                    int offset = obj_xyz[i].x - obj_xyz[i - 1].x;//补齐 x 方向的缺点
                     if (offset > 1 && offset < 10 && obj_xyz[i].y == obj_xyz[i - 1].y)
                     {
                         for (int index = 0; index < offset; index++)
@@ -156,7 +158,7 @@ namespace WindowsFormsApp2
                     else
                     {
                         bt.SetPixel(obj_xyz[i].x, (int)obj_xyz[i].y, System.Drawing.Color.FromArgb(255, 255, 255));
-                        for (int indexAdd = 0; indexAdd < countAdd; indexAdd++)
+                        for (int indexAdd = 0; indexAdd < countAdd; indexAdd++) //补齐Y方向
                         {
                             bt.SetPixel(obj_xyz[i].x, (int)obj_xyz[i].y + indexAdd, System.Drawing.Color.FromArgb(255, 255, 255));
                         }
@@ -165,7 +167,7 @@ namespace WindowsFormsApp2
                 else
                 {
                     bt.SetPixel(obj_xyz[i].x, (int)obj_xyz[i].y, System.Drawing.Color.FromArgb(255, 255, 255));
-                    for (int index = 0; index < 10; index++)
+                    for (int index = 0; index < 10; index++)// 补齐y 方向的间隔
                     {
                         bt.SetPixel(obj_xyz[i].x, (int)obj_xyz[i].y + index, System.Drawing.Color.FromArgb(255, 255, 255));
                     }
@@ -253,11 +255,47 @@ namespace WindowsFormsApp2
                     }
                     if (lstPoint.Count == 2 && lstPoint[1].X - lstPoint[0].X > 140)
                     {
+                        //获取2个点的 起始和结尾的 坐标
+                        Point pStart, pEnd;
+                        Point pTempStart, pTempEnd;
 
-                        Point2Point p2p;
-                        p2p.pointStart = lstPoint[0];
-                        p2p.pointEnd = lstPoint[1];
-                        obj_MotorP2P.Add(p2p);
+                        pTempStart = new Point();
+                        pTempEnd = new Point();
+
+                        pStart = lstPoint[0];
+                        pEnd = lstPoint[1];
+                        //2个点的 再寻找8个点 补充车顶弧度坐标
+                        double addCuntPointTo2 = 8.0;
+
+                        // 计算8个点的间隔像素  step
+                        double tst = (double)(lstPoint[1].X - lstPoint[0].X) / (addCuntPointTo2 - 1);
+                        int xStepForEightPoint = (int)tst;//(lstPoint[1].X - lstPoint[0].X) / (int)addCuntPointTo2;//算出8个点间隔的像素点
+
+                        for(int iXCount = 0; iXCount < 4; iXCount++)
+                        {
+                            Point2Point p2p;
+
+                            pTempStart.X = pStart.X + xStepForEightPoint * 2*iXCount;
+                            pTempStart.Y = pStart.Y;
+
+
+                            pTempEnd.X = pTempStart.X + xStepForEightPoint;
+                            pTempEnd.Y = pStart.Y;
+
+                            p2p.pointStart = pTempStart;
+                            if (iXCount == 3) //将结尾的 点用 pEnd 矫正
+                            {
+                                pTempEnd.X = pEnd.X;
+                            }
+
+                            p2p.pointEnd = pTempEnd;
+                            obj_MotorP2P.Add(p2p);
+
+                            //pTempStart.X = pTempEnd.X + xStepForEightPoint;// //
+                        }
+
+                       
+
                     }
                     else if (lstPoint.Count == 4 && (lstPoint[1].X - lstPoint[0].X > 30 && lstPoint[1].X - lstPoint[0].X < 90)
                         && (lstPoint[3].X - lstPoint[2].X > 30 && lstPoint[3].X - lstPoint[2].X < 90))
@@ -379,9 +417,9 @@ namespace WindowsFormsApp2
 
                 for (int i = 0; i < obj_MotorP2P.Count; i++)
                 {
-                    for (int xLen = -5; xLen < 5; xLen++)
+                    for (int xLen = -3; xLen < 3; xLen++)
                     {
-                        for (int yLen = -5; yLen < 5; yLen++)
+                        for (int yLen = -3; yLen < 3; yLen++)
                         {
                             btPointMotor.SetPixel(obj_MotorP2P[i].pointStart.X + xLen, obj_MotorP2P[i].pointStart.Y + yLen, System.Drawing.Color.FromArgb(255, 255, 255));
                             btPointMotor.SetPixel(obj_MotorP2P[i].pointEnd.X + xLen, obj_MotorP2P[i].pointEnd.Y + yLen, System.Drawing.Color.FromArgb(255, 255, 255));
